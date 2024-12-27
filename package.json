@@ -5,10 +5,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "wxt",
-    "dev:firefox": "wxt -b firefox",
-    "build": "wxt build",
-    "build:firefox": "wxt build -b firefox",
+    "dev": "concurrently 'pnpm run dev:tailwind' 'wxt'",
+    "dev:firefox": "concurrently 'pnpm run dev:tailwind' 'wxt -b firefox'",
+    "dev:tailwind": "npx tailwindcss -i ./src/index.css -o ./src/assets/tailwind.css --watch",
+    "build:all": "pnpm run build:tailwind && wxt build && wxt build -b firefox",
+    "build": "pnpm run build:tailwind && wxt build",
+    "build:firefox": "pnpm run build:tailwind && wxt build -b firefox",
+    "build:tailwind": "npx tailwindcss -i ./src/index.css -o ./src/assets/tailwind.css --minify",
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
@@ -23,6 +26,8 @@
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "@wxt-dev/module-react": "^1.1.2",
+    "concurrently": "^9.1.0",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5.6.3",
     "wxt": "^0.19.13"
   }
